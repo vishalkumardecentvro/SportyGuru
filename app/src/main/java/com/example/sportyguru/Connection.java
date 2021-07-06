@@ -1,5 +1,7 @@
 package com.example.sportyguru;
 
+import com.example.sportyguru.table.University;
+
 import java.util.List;
 
 import retrofit2.Call;

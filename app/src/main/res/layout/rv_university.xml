@@ -1,18 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/llUniversity"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:background="@drawable/border_bottom"
+  android:orientation="vertical"
   android:padding="10dp">
 
   <TextView
     android:id="@+id/tvName"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fontFamily="@font/reggae_one_regular"
     android:padding="5dp"
     android:text="University name"
     android:textColor="@color/black"
-    android:textSize="16sp" />
+    android:textSize="16sp"
+    android:textStyle="bold" />
 
-</RelativeLayout>
+  <LinearLayout
+    android:id="@+id/llUniversityInformation"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:visibility="gone">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:orientation="vertical">
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="State"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="Country"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="Alpha code"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="Domain"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="Website"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:orientation="vertical">
+
+      <TextView
+        android:id="@+id/tvState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:padding="5dp"
+        android:text="state name"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+      <TextView
+        android:id="@+id/tvCountry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:padding="5dp"
+        android:text="country name"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+      <TextView
+        android:id="@+id/tvAlphaCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:padding="5dp"
+        android:text="Alpha code"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+      <TextView
+        android:id="@+id/tvDomain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:padding="5dp"
+        android:autoLink="web"
+        android:text="domain name"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+      <TextView
+        android:id="@+id/tvWebsite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:gravity="end"
+        android:padding="5dp"
+        android:text="website link"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    </LinearLayout>
+  </LinearLayout>
+
+
+</LinearLayout>

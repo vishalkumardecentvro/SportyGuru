@@ -1,4 +1,4 @@
-package com.example.sportyguru;
+package com.example.sportyguru.table;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -11,7 +11,7 @@ public class University {
   @SerializedName("alpha_two_code")
   private String alphaTwoCode;
   @SerializedName("state-province")
-  private String stateProvince;
+  private String state;
 
   private String country, name;
 
@@ -33,12 +33,12 @@ public class University {
     this.alphaTwoCode = alphaTwoCode;
   }
 
-  public String getStateProvince() {
-    return stateProvince;
+  public String getState() {
+    return state;
   }
 
-  public void setStateProvince(String stateProvince) {
-    this.stateProvince = stateProvince;
+  public void setState(String state) {
+    this.state = state;
   }
 
   public String getCountry() {
