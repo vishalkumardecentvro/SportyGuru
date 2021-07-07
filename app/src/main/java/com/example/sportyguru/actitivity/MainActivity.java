@@ -13,6 +13,7 @@ import com.example.sportyguru.databinding.ActivityMainBinding;
 import com.example.sportyguru.room.entity.UniversityEntity;
 import com.example.sportyguru.room.view.UniversityView;
 import com.example.sportyguru.table.University;
+import com.wessam.library.NetworkChecker;
 
 import java.util.List;
 
@@ -36,7 +37,12 @@ public class MainActivity extends AppCompatActivity {
     instantiate();
     initialize();
     listen();
-    load();
+
+    if (NetworkChecker.isNetworkConnected(this)) {
+      load();
+    } else {
+      showOfflineMessage();
+    }
   }
 
   private void instantiate() {
@@ -50,6 +56,16 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void listen() {
+    binding.mcvInternet.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+
+        if (NetworkChecker.isNetworkConnected(MainActivity.this))
+          showOnlineMessage();
+        else
+          showOfflineMessage();
+      }
+    });
 
   }
 
@@ -100,5 +116,20 @@ public class MainActivity extends AppCompatActivity {
       universityEntity.setState(university.getState());
 
     universityView.insert(universityEntity);
+  }
+
+  private void showOfflineMessage() {
+    binding.rvUniversity.setVisibility(View.GONE);
+    binding.ivNoInternet.setVisibility(View.VISIBLE);
+    binding.mcvInternet.setVisibility(View.VISIBLE);
+    Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+  }
+
+  private void showOnlineMessage() {
+    load();
+    binding.rvUniversity.setVisibility(View.VISIBLE);
+    binding.ivNoInternet.setVisibility(View.GONE);
+    binding.mcvInternet.setVisibility(View.GONE);
+    Toast.makeText(this, "Internet restored", Toast.LENGTH_SHORT).show();
   }
 }

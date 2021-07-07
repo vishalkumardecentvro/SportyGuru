@@ -6,6 +6,36 @@
   android:layout_height="match_parent"
   tools:context=".actitivity.MainActivity">
 
+  <ImageView
+    android:id="@+id/ivNoInternet"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    android:layout_centerInParent="true"
+    android:src="@drawable/network"
+    android:visibility="gone" />
+
+  <com.google.android.material.card.MaterialCardView
+    android:id="@+id/mcvInternet"
+    android:layout_width="175dp"
+    android:layout_height="50dp"
+    android:layout_below="@id/ivNoInternet"
+    android:layout_centerInParent="true"
+    android:layout_marginTop="10dp"
+    android:visibility="gone"
+    app:cardCornerRadius="50dp"
+    app:strokeColor="@color/black"
+    app:strokeWidth="1dp">
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:padding="5dp"
+      android:text="No internet!! Try again"
+      android:textColor="@color/black"
+      android:textStyle="bold" />
+  </com.google.android.material.card.MaterialCardView>
+
   <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/rvUniversity"
     android:layout_width="match_parent"
@@ -13,6 +43,6 @@
     android:orientation="vertical"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     app:reverseLayout="false"
-    tools:listitem="@layout/rv_university"/>
+    tools:listitem="@layout/rv_university" />
 
 </RelativeLayout>
