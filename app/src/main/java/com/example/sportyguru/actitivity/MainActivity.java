@@ -1,7 +1,6 @@
 package com.example.sportyguru.actitivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -76,17 +75,16 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void saveUniversitiesInRoom(List<University> universityList) {
-    int i = 0;
+    int universityCount = 0;
 
     for (University university : universityList) {
-      Log.i("--name--", university.getName());
 
-      if (i == 20)
+      if (universityCount == 20)
         return;
 
       saveUniversity(university);
 
-      i++;
+      universityCount++;
     }
   }
 
