@@ -13,7 +13,7 @@ public class University {
   @SerializedName("state-province")
   private String state;
 
-  private String country, name;
+  private String country, name,universityState;
 
   private List<String> domains ;
 
@@ -63,5 +63,13 @@ public class University {
 
   public void setDomains(List<String> domains) {
     this.domains = domains;
+  }
+
+  public String getUniversityState() {
+    return universityState;
+  }
+
+  public void setUniversityState(String universityState) {
+    this.universityState = universityState;
   }
 }
