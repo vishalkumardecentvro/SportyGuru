@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.sportyguru.Connection;
+import com.example.sportyguru.R;
 import com.example.sportyguru.adapter.UniversityAdapter;
 import com.example.sportyguru.databinding.ActivityMainBinding;
 import com.example.sportyguru.room.entity.UniversityEntity;
@@ -86,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void load() {
+    binding.lpiProgress.setVisibility(View.VISIBLE);
+    binding.lpiProgress.setIndicatorColor(getResources().getColor(R.color.green_primary));
+
     if (isOffline)
       populateDataInOfflineMode();
     else {
@@ -101,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
             saveUniversitiesInRoom(universityResponse.body());
 
           }
+          binding.lpiProgress.setVisibility(View.GONE);
         }
 
         @Override
@@ -165,10 +170,12 @@ public class MainActivity extends AppCompatActivity {
             binding.ivNoInternet.setVisibility(View.GONE);
             binding.mcvInternet.setVisibility(View.GONE);
           }
+          binding.lpiProgress.setVisibility(View.GONE);
 
         } else {
           Toast.makeText(MainActivity.this, "Please connect internet once to save data in offline mode", Toast.LENGTH_SHORT).show();
 
+          binding.lpiProgress.setVisibility(View.GONE);
           binding.rvUniversity.setVisibility(View.GONE);
           binding.ivNoInternet.setVisibility(View.VISIBLE);
           binding.mcvInternet.setVisibility(View.VISIBLE);

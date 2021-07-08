@@ -6,6 +6,14 @@
   android:layout_height="match_parent"
   tools:context=".actitivity.MainActivity">
 
+  <com.google.android.material.progressindicator.LinearProgressIndicator
+    android:id="@+id/lpiProgress"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    android:indeterminate="true"
+    android:visibility="gone"
+    android:layout_centerInParent="true" />
+
   <ImageView
     android:id="@+id/ivNoInternet"
     android:layout_width="150dp"
