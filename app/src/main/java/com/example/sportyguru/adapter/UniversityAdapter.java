@@ -65,7 +65,7 @@ public class UniversityAdapter extends RecyclerView.Adapter<UniversityAdapter.Vi
     }
 
     private void populate(University university) {
-      if (!university.getState().isEmpty())
+      if (university.getState()!= null)
         binding.tvState.setText(university.getState());
       else {
         binding.tvState.setVisibility(View.GONE);
