@@ -1,4 +1,4 @@
-package com.example.sportyguru.actitivity;
+package com.example.sportyguru.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -66,10 +66,8 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void listen() {
-    binding.mcvInternet.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-
+    binding.mcvInternet.setOnClickListener(v -> {
+      {
         if (NetworkChecker.isNetworkConnected(MainActivity.this)) {
 
           isOffline = !NetworkChecker.isNetworkConnected(MainActivity.this);

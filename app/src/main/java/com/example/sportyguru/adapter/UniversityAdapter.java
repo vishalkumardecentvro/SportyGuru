@@ -17,6 +17,7 @@ import java.util.List;
 public class UniversityAdapter extends RecyclerView.Adapter<UniversityAdapter.ViewHolder> {
   private List<University> universityList = new ArrayList<>();
   private List<UniversityEntity> universityEntityList = new ArrayList<>();
+
   private boolean isUniversityExpanded = false;
   private boolean isOfflineMode = false;
 
@@ -65,7 +66,7 @@ public class UniversityAdapter extends RecyclerView.Adapter<UniversityAdapter.Vi
     }
 
     private void populate(University university) {
-      if (university.getState()!= null)
+      if (university.getState() != null)
         binding.tvState.setText(university.getState());
       else {
         binding.tvState.setVisibility(View.GONE);
