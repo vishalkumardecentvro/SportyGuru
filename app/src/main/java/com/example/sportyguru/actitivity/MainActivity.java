@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.sportyguru.Connection;
-import com.example.sportyguru.adapter.OfflineUniversityAdapter;
 import com.example.sportyguru.adapter.UniversityAdapter;
 import com.example.sportyguru.databinding.ActivityMainBinding;
 import com.example.sportyguru.room.entity.UniversityEntity;
@@ -28,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
   private ActivityMainBinding binding;
 
   private UniversityAdapter universityAdapter;
-  private OfflineUniversityAdapter offlineUniversityAdapter;
 
   private UniversityView universityView;
 
@@ -55,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
   private void instantiate() {
     universityAdapter = new UniversityAdapter();
-    offlineUniversityAdapter = new OfflineUniversityAdapter();
 
     universityView = ViewModelProviders.of(this).get(UniversityView.class);
 
@@ -75,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         if (NetworkChecker.isNetworkConnected(MainActivity.this)) {
 
           isOffline = !NetworkChecker.isNetworkConnected(MainActivity.this);
-          //binding.rvUniversity.setAdapter(universityAdapter);
 
           load();
 
