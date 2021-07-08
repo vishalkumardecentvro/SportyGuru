@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "university")
 public class UniversityEntity {
 
-  private String name, country, state, webPage, domain;
+  private String name, country, state, webPage, domain, alphaTwoCode;
   @PrimaryKey(autoGenerate = true)
   private int id;
 
@@ -56,5 +56,13 @@ public class UniversityEntity {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public String getAlphaTwoCode() {
+    return alphaTwoCode;
+  }
+
+  public void setAlphaTwoCode(String alphaTwoCode) {
+    this.alphaTwoCode = alphaTwoCode;
   }
 }

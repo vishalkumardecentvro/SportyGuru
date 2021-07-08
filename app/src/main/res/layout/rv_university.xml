@@ -31,6 +31,7 @@
       android:orientation="vertical">
 
       <TextView
+        android:id="@+id/tvStateLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
@@ -112,9 +113,9 @@
         android:id="@+id/tvDomain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autoLink="web"
         android:gravity="end"
         android:padding="5dp"
-        android:autoLink="web"
         android:text="domain name"
         android:textColor="@color/black"
         android:textSize="14sp" />

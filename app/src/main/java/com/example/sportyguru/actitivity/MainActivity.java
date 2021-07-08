@@ -1,13 +1,16 @@
 package com.example.sportyguru.actitivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.sportyguru.Connection;
+import com.example.sportyguru.adapter.OfflineUniversityAdapter;
 import com.example.sportyguru.adapter.UniversityAdapter;
 import com.example.sportyguru.databinding.ActivityMainBinding;
 import com.example.sportyguru.room.entity.UniversityEntity;
@@ -23,8 +26,15 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
   private ActivityMainBinding binding;
+
   private UniversityAdapter universityAdapter;
+  private OfflineUniversityAdapter offlineUniversityAdapter;
+
   private UniversityView universityView;
+
+  private boolean isOffline = false;
+
+  private SharedPreferences sharedPreferences;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -34,20 +44,22 @@ public class MainActivity extends AppCompatActivity {
 
     setContentView(view);
 
+    isOffline = !NetworkChecker.isNetworkConnected(this);
+
     instantiate();
     initialize();
     listen();
+    load();
 
-    if (NetworkChecker.isNetworkConnected(this)) {
-      load();
-    } else {
-      showOfflineMessage();
-    }
   }
 
   private void instantiate() {
     universityAdapter = new UniversityAdapter();
+    offlineUniversityAdapter = new OfflineUniversityAdapter();
+
     universityView = ViewModelProviders.of(this).get(UniversityView.class);
+
+    sharedPreferences = getSharedPreferences("university", MODE_PRIVATE);
 
   }
 
@@ -60,48 +72,71 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onClick(View v) {
 
-        if (NetworkChecker.isNetworkConnected(MainActivity.this))
-          showOnlineMessage();
-        else
-          showOfflineMessage();
+        if (NetworkChecker.isNetworkConnected(MainActivity.this)) {
+
+          isOffline = !NetworkChecker.isNetworkConnected(MainActivity.this);
+          //binding.rvUniversity.setAdapter(universityAdapter);
+
+          load();
+
+          binding.rvUniversity.setVisibility(View.VISIBLE);
+          binding.ivNoInternet.setVisibility(View.GONE);
+          binding.mcvInternet.setVisibility(View.GONE);
+          binding.mcvLoadData.setVisibility(View.GONE);
+        }
       }
     });
 
   }
 
   private void load() {
-    Call<List<University>> data = Connection.getUniversityInterface().getUniversities();
-    data.enqueue(new Callback<List<University>>() {
-      @Override
-      public void onResponse(Call<List<University>> call, Response<List<University>> universityResponse) {
+    if (isOffline)
+      populateDataInOfflineMode();
+    else {
+      Call<List<University>> data = Connection.getUniversityInterface().getUniversities();
+      data.enqueue(new Callback<List<University>>() {
+        @Override
+        public void onResponse(Call<List<University>> call, Response<List<University>> universityResponse) {
 
-        if (universityResponse.body() != null) {
+          if (universityResponse.body() != null) {
 
-          universityAdapter.setUniversityList(universityResponse.body());
-          saveUniversitiesInRoom(universityResponse.body());
+            universityAdapter.setUniversityList(universityResponse.body());
+            getSupportActionBar().setTitle("Universities");
+            saveUniversitiesInRoom(universityResponse.body());
 
+          }
         }
-      }
 
-      @Override
-      public void onFailure(Call<List<University>> call, Throwable t) {
-        Toast.makeText(MainActivity.this, "Please check your internet connection or try again", Toast.LENGTH_SHORT).show();
-      }
-    });
+        @Override
+        public void onFailure(Call<List<University>> call, Throwable t) {
+          Toast.makeText(MainActivity.this, "Please check your internet connection or try again", Toast.LENGTH_SHORT).show();
+        }
+      });
+    }
   }
 
   private void saveUniversitiesInRoom(List<University> universityList) {
-    int universityCount = 0;
 
-    for (University university : universityList) {
+    if (!sharedPreferences.getBoolean("isUniversityPopulatedInOfflineMode", false)) {
+      int universityCount = 0;
 
-      if (universityCount == 20)
-        return;
+      for (University university : universityList) {
 
-      saveUniversity(university);
+        if (universityCount == 20) {
 
-      universityCount++;
-    }
+          SharedPreferences.Editor universityEditor = sharedPreferences.edit();
+          universityEditor.putBoolean("isUniversityPopulatedInOfflineMode", true);
+          universityEditor.apply();
+
+          return;
+        }
+
+        saveUniversity(university);
+        universityCount++;
+      }
+    } else
+      Toast.makeText(MainActivity.this, "20 universities stored in room database", Toast.LENGTH_SHORT).show();
+
   }
 
   private void saveUniversity(University university) {
@@ -111,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
     universityEntity.setCountry(university.getCountry());
     universityEntity.setDomain(university.getDomains().get(0));
     universityEntity.setWebPage(university.getWebPages().get(0));
+    universityEntity.setAlphaTwoCode(university.getAlphaTwoCode());
 
     if (university.getState() != null)
       universityEntity.setState(university.getState());
@@ -118,18 +154,31 @@ public class MainActivity extends AppCompatActivity {
     universityView.insert(universityEntity);
   }
 
-  private void showOfflineMessage() {
-    binding.rvUniversity.setVisibility(View.GONE);
-    binding.ivNoInternet.setVisibility(View.VISIBLE);
-    binding.mcvInternet.setVisibility(View.VISIBLE);
-    Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
-  }
+  private void populateDataInOfflineMode() {
 
-  private void showOnlineMessage() {
-    load();
-    binding.rvUniversity.setVisibility(View.VISIBLE);
-    binding.ivNoInternet.setVisibility(View.GONE);
-    binding.mcvInternet.setVisibility(View.GONE);
-    Toast.makeText(this, "Internet restored", Toast.LENGTH_SHORT).show();
+    universityView.getAllUniversities().observe(MainActivity.this, new Observer<List<UniversityEntity>>() {
+      @Override
+      public void onChanged(List<UniversityEntity> universityList) {
+        if (!universityList.isEmpty()) {
+          if (isOffline) {
+            getSupportActionBar().setTitle("Universities (Offline (20) )");
+
+            universityAdapter.setUniversityEntityList(universityList, isOffline);
+
+            binding.rvUniversity.setVisibility(View.VISIBLE);
+            binding.ivNoInternet.setVisibility(View.GONE);
+            binding.mcvInternet.setVisibility(View.GONE);
+          }
+
+        } else {
+          Toast.makeText(MainActivity.this, "Please connect internet once to save data in offline mode", Toast.LENGTH_SHORT).show();
+
+          binding.rvUniversity.setVisibility(View.GONE);
+          binding.ivNoInternet.setVisibility(View.VISIBLE);
+          binding.mcvInternet.setVisibility(View.VISIBLE);
+
+        }
+      }
+    });
   }
 }
